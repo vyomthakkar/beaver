@@ -14,7 +14,8 @@ from llm import gpt
 load_dotenv()
 
 
-input_schema_path = 'testcases/citations.json'
+# input_schema_path = 'testcases/citations.json'
+input_schema_path = 'schema_chunk_5.json'
 input_text_path = 'testcases/transformers.bib'
 
 
@@ -42,6 +43,8 @@ def extract_document(file_path):
             response_schema=convert_schema_to_pydantic(input_schema_path)
         ),
     )
+    
+    print(convert_schema_to_pydantic(input_schema_path))
 
     print(result.text)
     
@@ -62,7 +65,7 @@ def extract_document_naive(file_path):
 
     file_ref = client.files.upload(file=file_path, config=types.UploadFileConfig(mime_type="text/plain"))
 
-    extract_document_prompt = """
+    extract_document_prompt = f"""
     Review the provided file content. Extract the relevant information based on the
     JSON schema structure expected in the output format configuration.
     Ensure the output strictly adheres to the schema.
