@@ -1,90 +1,111 @@
-import json
-import subprocess
-import importlib.util
-import os
 from google import genai
-from google.genai import types
 from dotenv import load_dotenv
+from pydantic import BaseModel
+from typing import Optional
+from enum import Enum
+import json
+from google.genai import types
+import os
+import time
+import concurrent.futures
+from llm import gpt
 
 
 load_dotenv()
 
 
-
 input_schema_path = 'testcases/citations.json'
 input_text_path = 'testcases/transformers.bib'
-generated_code_path = "citations.py"
-model_name = "gemini-2.0-flash"
 
-subprocess.run([
-    "datamodel-codegen",
-    "--input", input_schema_path,
-    "--input-file-type", "jsonschema",
-    "--output", generated_code_path,
-    "--output-model-type", "pydantic_v2.BaseModel", # Or pydantic_v1 if needed
-    "--class-name", "DynamicResponseModel" # Or derive dynamically
-], check=True)
 
-spec = importlib.util.spec_from_file_location("temp_module", generated_code_path)
-temp_module = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(temp_module)
-DynamicModelClass = getattr(temp_module, "DynamicResponseModel") # Get the generated class
-
-# --- Gemini API Call ---
-def extract_dynamic_document(file_path, schema_model_class):
-    print(f"Extracting document from {file_path} using dynamic schema")
+def extract_document(file_path):
+    print(f"Extracting document from {file_path}")
     client = genai.Client()
-    model = "gemini-2.0-flash" # Or whichever model supports the schema feature well
+    model = "gemini-2.0-flash"
 
-    # file_ref = client.files.upload(file=file_path)
-    # Determine the appropriate mime type (safest is often text/plain for .bib)
-    # You could add more sophisticated logic here if needed for other file types
-    file_mime_type = "text/plain"
-    if file_path.lower().endswith(".pdf"):
-        file_mime_type = "application/pdf"
-    # Add elif for other known types like images if you plan to support them
+    file_ref = client.files.upload(file=file_path, config=types.UploadFileConfig(mime_type="text/plain"))
 
-    print(f"Uploading file: {file_path} with MIME type: {file_mime_type}") # Added print for debugging
-    file_ref = client.files.upload(
-        file=file_path,
-        mime_type=file_mime_type  # <-- Add this argument
-    )
-
-    # You might need to adjust the prompt to be more generic
-    # or potentially include parts of the schema description in the prompt
-    extract_prompt = f"""
-    Input is a file. Your job is to extract information according
-    to the provided JSON schema structure. Find the relevant details
-    in the text and format them strictly according to the schema.
-    Input file content is provided first.
+    extract_document_prompt = """
+    Review the provided file content. Extract the relevant information based on the
+    JSON schema structure expected in the output format configuration.
+    Ensure the output strictly adheres to the schema.
     """
 
+    # response = client.models.generate_content(model=model, contents="Hello, world!")
+    # print(response.text)
+
+    result = client.models.generate_content(
+        model=model,
+        contents=[file_ref, extract_document_prompt],
+        config=types.GenerateContentConfig(
+            response_mime_type="application/json", 
+            response_schema=convert_schema_to_pydantic(input_schema_path)
+        ),
+    )
+
+    print(result.text)
+    
+    # Parse the text response into JSON
     try:
-        result = client.models.generate_content(
-            model=model,
-            contents=[file_ref, extract_prompt],
-            config=types.GenerateContentConfig(
-                response_mime_type="application/json",
-                response_schema=schema_model_class # Pass the dynamically loaded class
-            ),
-            # Consider adding generation_config like temperature=0 for more deterministic JSON
-        )
-        print(result.text)
         json_result = json.loads(result.text)
-        # Optional: Validate the result against the original input_schema_path using jsonschema lib
         return json_result
-    except Exception as e:
-        print(f"Error during Gemini call or JSON parsing: {e}")
-        # Handle potential errors from API or JSON loading
-        return {"error": str(e)}
+    except json.JSONDecodeError:
+        # If parsing fails, return a structured error response
+        return {"error": "Failed to parse response as JSON", "raw_text": result.text}
+    
+    
+    
+def extract_document_naive(file_path):
+    print(f"Extracting document from {file_path}")
+    client = genai.Client()
+    model = "gemini-2.0-flash"
 
+    file_ref = client.files.upload(file=file_path, config=types.UploadFileConfig(mime_type="text/plain"))
 
-# --- Main Execution ---
-final_result = extract_dynamic_document(input_text_path, DynamicModelClass)
-print(final_result)
+    extract_document_prompt = """
+    Review the provided file content. Extract the relevant information based on the
+    JSON schema structure expected in the output format configuration.
+    Ensure the output strictly adheres to the schema.
+    
+    This is the JSON schema:
+    {convert_schema_to_pydantic(input_schema_path)}
+    """
 
+    # response = client.models.generate_content(model=model, contents="Hello, world!")
+    # print(response.text)
 
-# print(DynamicModelClass)
+    result = client.models.generate_content(
+        model=model,
+        contents=[file_ref, extract_document_prompt],
+    )
 
-# Clean up the generated file
-# os.remove(generated_code_path)
+    print(result.text)
+    
+    # Parse the text response into JSON
+    try:
+        json_result = json.loads(result.text)
+        return json_result
+    except json.JSONDecodeError:
+        # If parsing fails, return a structured error response
+        return {"error": "Failed to parse response as JSON", "raw_text": result.text}
+    
+    
+def convert_schema_to_pydantic(schema_path):
+    with open(schema_path, 'r') as file:
+        schema = json.load(file)
+        
+    # prompt = f"""
+    # Convert the following JSON schema into a Pydantic model that can be used for structured output from a LLM:
+    # {schema}
+    
+    # The output should be a valid Pydantic model definition that can be used in a Python script.
+    # Only output the Pydantic model definition, nothing else.
+    # """
+    
+    # return gpt(prompt)
+    
+    return schema
+    
+# print(convert_schema_to_pydantic(input_schema_path))
+# extract_document(input_text_path)
+extract_document_naive(input_text_path)

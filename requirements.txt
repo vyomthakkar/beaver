@@ -4,3 +4,4 @@ datamodel-code-generator
 pydantic
 google-genai
 python-dotenv
+openai
