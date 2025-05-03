@@ -1,0 +1,6 @@
+subprocess
+importlib
+datamodel-code-generator
+pydantic
+google-genai
+python-dotenv
