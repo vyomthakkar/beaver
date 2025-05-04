@@ -205,36 +205,36 @@ def create_schema_chunks(schema, tokenizer_name="cl100k_base", threshold=10000, 
     # --- Step 2.5: Validation - Check Required Field Coverage ---
     logging.info("Step 2.5: Validating coverage of required fields...")
     validation_passed = True # Assume pass initially
-    original_required = schema.get('required', [])
-    if not isinstance(original_required, list):
-        logging.warning("Original schema 'required' field is not a list. Skipping validation.")
-        original_required = []
+    # original_required = schema.get('required', [])
+    original_required = schema['properties'].keys()
+    print(f"{original_required=}")
+    # if not isinstance(original_required, list):
+    #     logging.warning("Original schema 'required' field is not a list. Skipping validation.")
+    #     original_required = []
 
     # if original_required: #CHANGED THIS, TODO: FIX LOGIC, REMOVE CONDITIONAL
-    if True:
-        all_chunked_properties = set()
-        for batch in property_batches:
-            all_chunked_properties.update(batch)
+    all_chunked_properties = set()
+    for batch in property_batches:
+        all_chunked_properties.update(batch)
 
-        missing_required = set(original_required) - all_chunked_properties
-        
-        print(f"{missing_required=}")
-        print(f"{all_chunked_properties=}")
-        print(f"{set(schema['properties'].keys())=}")
-        print(f"{len(set(schema['properties'].keys()))=}")
-        print(f"{len(all_chunked_properties)=}")
-        
-        if not missing_required:
-            logging.info("Validation successful: All original required fields are covered by the generated batches.")
-        else:
-            logging.error(f"Validation FAILED: The following required fields from the original schema "
-                          f"are NOT covered by any generated batch: {missing_required}")
-            validation_passed = False
-            # Decide if you want to stop processing here or just log
-            # For now, we log the error and continue, but you might want to return None or raise an Exception
-            # return None # Example of stopping execution
+    missing_required = set(original_required) - all_chunked_properties
+    
+    print(f"{missing_required=}")
+    print(f"{all_chunked_properties=}")
+    print(f"{original_required=}")
+    print(f"{len(original_required)=}")
+    print(f"{len(all_chunked_properties)=}")
+    print(f"{schema['properties'].keys()=}")
+    
+    if not missing_required:
+        logging.info("Validation successful: All original required fields are covered by the generated batches.")
     else:
-        logging.info("No top-level required fields found in the original schema to validate coverage.")
+        logging.error(f"Validation FAILED: The following required fields from the original schema "
+                        f"are NOT covered by any generated batch: {missing_required}")
+        validation_passed = False
+        # Decide if you want to stop processing here or just log
+        # For now, we log the error and continue, but you might want to return None or raise an Exception
+        # return None # Example of stopping execution
     # ---------------------------------------------------------
     
     # 3. Generate minimal schema for each batch
@@ -294,9 +294,9 @@ def create_schema_chunks(schema, tokenizer_name="cl100k_base", threshold=10000, 
 # Load your schema
 try:
     # Assuming your schema is in a file named 'schema.json'
-    # with open('testcases/citations.json', 'r') as f:
+    with open('testcases/citations.json', 'r') as f:
     # with open('testcases/ga.json', 'r') as f:
-    with open('testcases/resume.json', 'r') as f:
+    # with open('testcases/resume.json', 'r') as f:
         cff_schema = json.load(f)
     logging.info("Successfully loaded schema from schema.json")
 except FileNotFoundError:

@@ -22,42 +22,6 @@
     }
   },
   "definitions": {
-    "url": {
-      "format": "uri",
-      "pattern": "^(https|http|ftp|sftp)://.+",
-      "type": "string"
-    },
-    "license": {
-      "description": "An SPDX license identifier.",
-      "oneOf": [
-        {
-          "$ref": "#/definitions/license-enum",
-          "examples": [
-            "Apache-2.0",
-            "MIT"
-          ]
-        },
-        {
-          "$comment": "When there are multiple licenses, it is assumed their relationship is OR, not AND",
-          "examples": [
-            [
-              "Apache-2.0",
-              "MIT"
-            ],
-            [
-              "GPL-3.0",
-              "GPL-3.0-or-later"
-            ]
-          ],
-          "items": {
-            "$ref": "#/definitions/license-enum"
-          },
-          "minItems": 1,
-          "type": "array",
-          "uniqueItems": true
-        }
-      ]
-    },
     "license-enum": {
       "$comment": "Use https://github.com/citation-file-format/get-spdx-licenses to update this enum in the future",
       "description": "SPDX license list; releaseDate=2021-05-14; source=https://raw.githubusercontent.com/spdx/license-list-data/master/json/licenses.json",
@@ -523,6 +487,42 @@
         "ZPL-2.1"
       ],
       "type": "string"
+    },
+    "url": {
+      "format": "uri",
+      "pattern": "^(https|http|ftp|sftp)://.+",
+      "type": "string"
+    },
+    "license": {
+      "description": "An SPDX license identifier.",
+      "oneOf": [
+        {
+          "$ref": "#/definitions/license-enum",
+          "examples": [
+            "Apache-2.0",
+            "MIT"
+          ]
+        },
+        {
+          "$comment": "When there are multiple licenses, it is assumed their relationship is OR, not AND",
+          "examples": [
+            [
+              "Apache-2.0",
+              "MIT"
+            ],
+            [
+              "GPL-3.0",
+              "GPL-3.0-or-later"
+            ]
+          ],
+          "items": {
+            "$ref": "#/definitions/license-enum"
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        }
+      ]
     }
   },
   "required": [

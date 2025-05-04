@@ -1,498 +1,694 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$schema": "http://json-schema.org/draft-07/schema",
   "type": "object",
   "properties": {
-    "$schema": {
-      "type": "string",
-      "description": "link to the version of the schema that can validate the resume",
-      "format": "uri"
+    "abstract": {
+      "description": "A description of the software or dataset.",
+      "minLength": 1,
+      "type": "string"
     },
-    "awards": {
-      "type": "array",
-      "description": "Specify any awards you have received throughout your professional career",
-      "additionalItems": false,
+    "authors": {
+      "description": "The author(s) of the software or dataset.",
       "items": {
-        "type": "object",
-        "additionalProperties": true,
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "e.g. One of the 100 greatest minds of the century"
+        "anyOf": [
+          {
+            "$ref": "#/definitions/person"
           },
-          "date": {
-            "$ref": "#/definitions/iso8601"
-          },
-          "awarder": {
-            "type": "string",
-            "description": "e.g. Time Magazine"
-          },
-          "summary": {
-            "type": "string",
-            "description": "e.g. Received for my work with Quantum Physics"
+          {
+            "$ref": "#/definitions/entity"
           }
-        }
-      }
-    },
-    "basics": {
-      "type": "object",
-      "additionalProperties": true,
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "label": {
-          "type": "string",
-          "description": "e.g. Web Developer"
-        },
-        "image": {
-          "type": "string",
-          "description": "URL (as per RFC 3986) to a image in JPEG or PNG format"
-        },
-        "email": {
-          "type": "string",
-          "description": "e.g. thomas@gmail.com",
-          "format": "email"
-        },
-        "phone": {
-          "type": "string",
-          "description": "Phone numbers are stored as strings so use any format you like, e.g. 712-117-2923"
-        },
-        "url": {
-          "type": "string",
-          "description": "URL (as per RFC 3986) to your website, e.g. personal homepage",
-          "format": "uri"
-        },
-        "summary": {
-          "type": "string",
-          "description": "Write a short 2-3 sentence biography about yourself"
-        },
-        "location": {
-          "type": "object",
-          "additionalProperties": true,
-          "properties": {
-            "address": {
-              "type": "string",
-              "description": "To add multiple address lines, use \n. For example, 1234 Gl\u00fccklichkeit Stra\u00dfe\nHinterhaus 5. Etage li."
-            },
-            "postalCode": {
-              "type": "string"
-            },
-            "city": {
-              "type": "string"
-            },
-            "countryCode": {
-              "type": "string",
-              "description": "code as per ISO-3166-1 ALPHA-2, e.g. US, AU, IN"
-            },
-            "region": {
-              "type": "string",
-              "description": "The general region where you live. Can be a US state, or a province, for instance."
-            }
-          }
-        },
-        "profiles": {
-          "type": "array",
-          "description": "Specify any number of social networks that you participate in",
-          "additionalItems": false,
-          "items": {
-            "type": "object",
-            "additionalProperties": true,
-            "properties": {
-              "network": {
-                "type": "string",
-                "description": "e.g. Facebook or Twitter"
-              },
-              "username": {
-                "type": "string",
-                "description": "e.g. neutralthoughts"
-              },
-              "url": {
-                "type": "string",
-                "description": "e.g. http://twitter.example.com/neutralthoughts",
-                "format": "uri"
-              }
-            }
-          }
-        }
-      }
-    },
-    "certificates": {
+        ]
+      },
+      "minItems": 1,
       "type": "array",
-      "description": "Specify any certificates you have received throughout your professional career",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": true,
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "e.g. Certified Kubernetes Administrator"
-          },
-          "date": {
-            "type": "string",
-            "description": "e.g. 1989-06-12",
-            "format": "date"
-          },
-          "url": {
-            "type": "string",
-            "description": "e.g. http://example.com",
-            "format": "uri"
-          },
-          "issuer": {
-            "type": "string",
-            "description": "e.g. CNCF"
-          }
-        }
-      }
+      "uniqueItems": true
     },
-    "education": {
+    "cff-version": {
+      "description": "The version of CFF used for providing the citation metadata.",
+      "examples": [
+        "1.2.0"
+      ],
+      "pattern": "^1\\.2\\.0$",
+      "type": "string"
+    },
+    "commit": {
+      "$ref": "#/definitions/commit"
+    },
+    "contact": {
+      "description": "The contact person, group, company, etc. for the software or dataset.",
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/definitions/person"
+          },
+          {
+            "$ref": "#/definitions/entity"
+          }
+        ]
+      },
+      "minItems": 1,
       "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": true,
-        "properties": {
-          "institution": {
-            "type": "string",
-            "description": "e.g. Massachusetts Institute of Technology"
-          },
-          "url": {
-            "type": "string",
-            "description": "e.g. http://facebook.example.com",
-            "format": "uri"
-          },
-          "area": {
-            "type": "string",
-            "description": "e.g. Arts"
-          },
-          "studyType": {
-            "type": "string",
-            "description": "e.g. Bachelor"
-          },
-          "startDate": {
-            "$ref": "#/definitions/iso8601"
-          },
-          "endDate": {
-            "$ref": "#/definitions/iso8601"
-          },
-          "score": {
-            "type": "string",
-            "description": "grade point average, e.g. 3.67/4.0"
-          },
-          "courses": {
-            "type": "array",
-            "description": "List notable courses/subjects",
-            "additionalItems": false,
-            "items": {
-              "type": "string",
-              "description": "e.g. H1302 - Introduction to American history"
-            }
-          }
-        }
-      }
+      "uniqueItems": true
     },
-    "interests": {
+    "date-released": {
+      "$ref": "#/definitions/date",
+      "description": "The date the work has been released."
+    },
+    "doi": {
+      "$ref": "#/definitions/doi"
+    },
+    "identifiers": {
+      "description": "The identifiers of the software or dataset.",
+      "items": {
+        "$ref": "#/definitions/identifier"
+      },
+      "minItems": 1,
       "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": true,
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "e.g. Philosophy"
-          },
-          "keywords": {
-            "type": "array",
-            "additionalItems": false,
-            "items": {
-              "type": "string",
-              "description": "e.g. Friedrich Nietzsche"
-            }
-          }
-        }
-      }
+      "uniqueItems": true
     },
-    "languages": {
+    "keywords": {
+      "description": "Keywords that describe the work.",
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
       "type": "array",
-      "description": "List any other languages you speak",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": true,
-        "properties": {
-          "language": {
-            "type": "string",
-            "description": "e.g. English, Spanish"
-          },
-          "fluency": {
-            "type": "string",
-            "description": "e.g. Fluent, Beginner"
-          }
-        }
-      }
-    },
-    "meta": {
-      "type": "object",
-      "description": "The schema version and any other tooling configuration lives here",
-      "additionalProperties": true,
-      "properties": {
-        "canonical": {
-          "type": "string",
-          "description": "URL (as per RFC 3986) to latest version of this document",
-          "format": "uri"
-        },
-        "version": {
-          "type": "string",
-          "description": "A version field which follows semver - e.g. v1.0.0"
-        },
-        "lastModified": {
-          "type": "string",
-          "description": "Using ISO 8601 with YYYY-MM-DDThh:mm:ss"
-        }
-      }
-    },
-    "projects": {
-      "type": "array",
-      "description": "Specify career projects",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": true,
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "e.g. The World Wide Web"
-          },
-          "description": {
-            "type": "string",
-            "description": "Short summary of project. e.g. Collated works of 2017."
-          },
-          "highlights": {
-            "type": "array",
-            "description": "Specify multiple features",
-            "additionalItems": false,
-            "items": {
-              "type": "string",
-              "description": "e.g. Directs you close but not quite there"
-            }
-          },
-          "keywords": {
-            "type": "array",
-            "description": "Specify special elements involved",
-            "additionalItems": false,
-            "items": {
-              "type": "string",
-              "description": "e.g. AngularJS"
-            }
-          },
-          "startDate": {
-            "$ref": "#/definitions/iso8601"
-          },
-          "endDate": {
-            "$ref": "#/definitions/iso8601"
-          },
-          "url": {
-            "type": "string",
-            "format": "uri",
-            "description": "e.g. http://www.computer.org/csdl/mags/co/1996/10/rx069-abs.html"
-          },
-          "roles": {
-            "type": "array",
-            "description": "Specify your role on this project or in company",
-            "additionalItems": false,
-            "items": {
-              "type": "string",
-              "description": "e.g. Team Lead, Speaker, Writer"
-            }
-          },
-          "entity": {
-            "type": "string",
-            "description": "Specify the relevant company/entity affiliations e.g. 'greenpeace', 'corporationXYZ'"
-          },
-          "type": {
-            "type": "string",
-            "description": " e.g. 'volunteering', 'presentation', 'talk', 'application', 'conference'"
-          }
-        }
-      }
-    },
-    "publications": {
-      "type": "array",
-      "description": "Specify your publications through your career",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": true,
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "e.g. The World Wide Web"
-          },
-          "publisher": {
-            "type": "string",
-            "description": "e.g. IEEE, Computer Magazine"
-          },
-          "releaseDate": {
-            "$ref": "#/definitions/iso8601"
-          },
-          "url": {
-            "type": "string",
-            "description": "e.g. http://www.computer.org.example.com/csdl/mags/co/1996/10/rx069-abs.html",
-            "format": "uri"
-          },
-          "summary": {
-            "type": "string",
-            "description": "Short summary of publication. e.g. Discussion of the World Wide Web, HTTP, HTML."
-          }
-        }
-      }
-    },
-    "references": {
-      "type": "array",
-      "description": "List references you have received",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": true,
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "e.g. Timothy Cook"
-          },
-          "reference": {
-            "type": "string",
-            "description": "e.g. Joe blogs was a great employee, who turned up to work at least once a week. He exceeded my expectations when it came to doing nothing."
-          }
-        }
-      }
-    },
-    "skills": {
-      "type": "array",
-      "description": "List out your professional skill-set",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": true,
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "e.g. Web Development"
-          },
-          "level": {
-            "type": "string",
-            "description": "e.g. Master"
-          },
-          "keywords": {
-            "type": "array",
-            "description": "List some keywords pertaining to this skill",
-            "additionalItems": false,
-            "items": {
-              "type": "string",
-              "description": "e.g. HTML"
-            }
-          }
-        }
-      }
-    },
-    "volunteer": {
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": true,
-        "properties": {
-          "organization": {
-            "type": "string",
-            "description": "e.g. Facebook"
-          },
-          "position": {
-            "type": "string",
-            "description": "e.g. Software Engineer"
-          },
-          "url": {
-            "type": "string",
-            "description": "e.g. http://facebook.example.com",
-            "format": "uri"
-          },
-          "startDate": {
-            "$ref": "#/definitions/iso8601"
-          },
-          "endDate": {
-            "$ref": "#/definitions/iso8601"
-          },
-          "summary": {
-            "type": "string",
-            "description": "Give an overview of your responsibilities at the company"
-          },
-          "highlights": {
-            "type": "array",
-            "description": "Specify accomplishments and achievements",
-            "additionalItems": false,
-            "items": {
-              "type": "string",
-              "description": "e.g. Increased profits by 20% from 2011-2012 through viral advertising"
-            }
-          }
-        }
-      }
-    },
-    "work": {
-      "type": "array",
-      "additionalItems": false,
-      "items": {
-        "type": "object",
-        "additionalProperties": true,
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "e.g. Facebook"
-          },
-          "location": {
-            "type": "string",
-            "description": "e.g. Menlo Park, CA"
-          },
-          "description": {
-            "type": "string",
-            "description": "e.g. Social Media Company"
-          },
-          "position": {
-            "type": "string",
-            "description": "e.g. Software Engineer"
-          },
-          "url": {
-            "type": "string",
-            "description": "e.g. http://facebook.example.com",
-            "format": "uri"
-          },
-          "startDate": {
-            "$ref": "#/definitions/iso8601"
-          },
-          "endDate": {
-            "$ref": "#/definitions/iso8601"
-          },
-          "summary": {
-            "type": "string",
-            "description": "Give an overview of your responsibilities at the company"
-          },
-          "highlights": {
-            "type": "array",
-            "description": "Specify multiple accomplishments",
-            "additionalItems": false,
-            "items": {
-              "type": "string",
-              "description": "e.g. Increased profits by 20% from 2011-2012 through viral advertising"
-            }
-          }
-        }
-      }
+      "uniqueItems": true
     }
   },
   "definitions": {
-    "iso8601": {
-      "type": "string",
-      "description": "e.g. 2014-06-29",
-      "pattern": "^([1-2][0-9]{3}-[0-1][0-9]-[0-3][0-9]|[1-2][0-9]{3}-[0-1][0-9]|[1-2][0-9]{3})$"
+    "region": {
+      "description": "A region.",
+      "minLength": 1,
+      "type": "string"
+    },
+    "swh-identifier": {
+      "$comment": "Software Heritage identifiers are documented here: https://docs.softwareheritage.org/devel/swh-model/persistent-identifiers.html.",
+      "description": "The Software Heritage identifier (without further qualifiers such as origin, visit, anchor, path).",
+      "examples": [
+        "swh:1:cnt:94a9ed024d3859793618152ea559a168bbcbb5e2",
+        "swh:1:dir:d198bc9d7a6bcf6db04f476d29314f157507d505",
+        "swh:1:rev:309cf2674ee7a0749978cf8265ab91a60aea0f7d",
+        "swh:1:rel:22ece559cc7cc2364edc5e5593d63ae8bd229f9f",
+        "swh:1:snp:c7c108084bc0bf3d81436bf980b46e98bd338453"
+      ],
+      "pattern": "^swh:1:(snp|rel|rev|dir|cnt):[0-9a-fA-F]{40}$",
+      "type": "string"
+    },
+    "post-code": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "description": "A post code."
+    },
+    "city": {
+      "description": "A city",
+      "minLength": 1,
+      "type": "string"
+    },
+    "address": {
+      "description": "An address.",
+      "minLength": 1,
+      "type": "string"
+    },
+    "url": {
+      "format": "uri",
+      "pattern": "^(https|http|ftp|sftp)://.+",
+      "type": "string"
+    },
+    "entity": {
+      "additionalProperties": false,
+      "description": "An entity, i.e., an institution, team, research group, company, conference, etc., as opposed to a single natural person.",
+      "properties": {
+        "address": {
+          "$ref": "#/definitions/address",
+          "description": "The entity's address."
+        },
+        "alias": {
+          "$ref": "#/definitions/alias",
+          "description": "The entity's alias."
+        },
+        "city": {
+          "$ref": "#/definitions/city",
+          "description": "The entity's city."
+        },
+        "country": {
+          "$ref": "#/definitions/country",
+          "description": "The entity's country."
+        },
+        "date-end": {
+          "$ref": "#/definitions/date",
+          "description": "The entity's ending date, e.g., when the entity is a conference."
+        },
+        "date-start": {
+          "$ref": "#/definitions/date",
+          "description": "The entity's starting date, e.g., when the entity is a conference."
+        },
+        "email": {
+          "$ref": "#/definitions/email",
+          "description": "The entity's email address."
+        },
+        "fax": {
+          "$ref": "#/definitions/fax",
+          "description": "The entity's fax number."
+        },
+        "location": {
+          "description": "The entity's location, e.g., when the entity is a conference.",
+          "minLength": 1,
+          "type": "string"
+        },
+        "name": {
+          "description": "The entity's name.",
+          "minLength": 1,
+          "type": "string"
+        },
+        "orcid": {
+          "$ref": "#/definitions/orcid",
+          "description": "The entity's orcid."
+        },
+        "post-code": {
+          "$ref": "#/definitions/post-code",
+          "description": "The entity's post code."
+        },
+        "region": {
+          "$ref": "#/definitions/region",
+          "description": "The entity's region."
+        },
+        "tel": {
+          "$ref": "#/definitions/tel",
+          "description": "The entity's telephone number."
+        },
+        "website": {
+          "$ref": "#/definitions/url",
+          "description": "The entity's website."
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    },
+    "commit": {
+      "description": "The (e.g., Git) commit hash or (e.g., Subversion) revision number of the work.",
+      "minLength": 1,
+      "type": "string"
+    },
+    "fax": {
+      "description": "A fax number.",
+      "minLength": 1,
+      "type": "string"
+    },
+    "country": {
+      "$comment": "ISO 3166-1 alpha-2 codes can be found at https://en.wikipedia.org/wiki/ISO_3166-1",
+      "description": "The ISO 3166-1 alpha-2 country code for a country.",
+      "enum": [
+        "AD",
+        "AE",
+        "AF",
+        "AG",
+        "AI",
+        "AL",
+        "AM",
+        "AO",
+        "AQ",
+        "AR",
+        "AS",
+        "AT",
+        "AU",
+        "AW",
+        "AX",
+        "AZ",
+        "BA",
+        "BB",
+        "BD",
+        "BE",
+        "BF",
+        "BG",
+        "BH",
+        "BI",
+        "BJ",
+        "BL",
+        "BM",
+        "BN",
+        "BO",
+        "BQ",
+        "BR",
+        "BS",
+        "BT",
+        "BV",
+        "BW",
+        "BY",
+        "BZ",
+        "CA",
+        "CC",
+        "CD",
+        "CF",
+        "CG",
+        "CH",
+        "CI",
+        "CK",
+        "CL",
+        "CM",
+        "CN",
+        "CO",
+        "CR",
+        "CU",
+        "CV",
+        "CW",
+        "CX",
+        "CY",
+        "CZ",
+        "DE",
+        "DJ",
+        "DK",
+        "DM",
+        "DO",
+        "DZ",
+        "EC",
+        "EE",
+        "EG",
+        "EH",
+        "ER",
+        "ES",
+        "ET",
+        "FI",
+        "FJ",
+        "FK",
+        "FM",
+        "FO",
+        "FR",
+        "GA",
+        "GB",
+        "GD",
+        "GE",
+        "GF",
+        "GG",
+        "GH",
+        "GI",
+        "GL",
+        "GM",
+        "GN",
+        "GP",
+        "GQ",
+        "GR",
+        "GS",
+        "GT",
+        "GU",
+        "GW",
+        "GY",
+        "HK",
+        "HM",
+        "HN",
+        "HR",
+        "HT",
+        "HU",
+        "ID",
+        "IE",
+        "IL",
+        "IM",
+        "IN",
+        "IO",
+        "IQ",
+        "IR",
+        "IS",
+        "IT",
+        "JE",
+        "JM",
+        "JO",
+        "JP",
+        "KE",
+        "KG",
+        "KH",
+        "KI",
+        "KM",
+        "KN",
+        "KP",
+        "KR",
+        "KW",
+        "KY",
+        "KZ",
+        "LA",
+        "LB",
+        "LC",
+        "LI",
+        "LK",
+        "LR",
+        "LS",
+        "LT",
+        "LU",
+        "LV",
+        "LY",
+        "MA",
+        "MC",
+        "MD",
+        "ME",
+        "MF",
+        "MG",
+        "MH",
+        "MK",
+        "ML",
+        "MM",
+        "MN",
+        "MO",
+        "MP",
+        "MQ",
+        "MR",
+        "MS",
+        "MT",
+        "MU",
+        "MV",
+        "MW",
+        "MX",
+        "MY",
+        "MZ",
+        "NA",
+        "NC",
+        "NE",
+        "NF",
+        "NG",
+        "NI",
+        "NL",
+        "NO",
+        "NP",
+        "NR",
+        "NU",
+        "NZ",
+        "OM",
+        "PA",
+        "PE",
+        "PF",
+        "PG",
+        "PH",
+        "PK",
+        "PL",
+        "PM",
+        "PN",
+        "PR",
+        "PS",
+        "PT",
+        "PW",
+        "PY",
+        "QA",
+        "RE",
+        "RO",
+        "RS",
+        "RU",
+        "RW",
+        "SA",
+        "SB",
+        "SC",
+        "SD",
+        "SE",
+        "SG",
+        "SH",
+        "SI",
+        "SJ",
+        "SK",
+        "SL",
+        "SM",
+        "SN",
+        "SO",
+        "SR",
+        "SS",
+        "ST",
+        "SV",
+        "SX",
+        "SY",
+        "SZ",
+        "TC",
+        "TD",
+        "TF",
+        "TG",
+        "TH",
+        "TJ",
+        "TK",
+        "TL",
+        "TM",
+        "TN",
+        "TO",
+        "TR",
+        "TT",
+        "TV",
+        "TW",
+        "TZ",
+        "UA",
+        "UG",
+        "UM",
+        "US",
+        "UY",
+        "UZ",
+        "VA",
+        "VC",
+        "VE",
+        "VG",
+        "VI",
+        "VN",
+        "VU",
+        "WF",
+        "WS",
+        "YE",
+        "YT",
+        "ZA",
+        "ZM",
+        "ZW"
+      ],
+      "type": "string"
+    },
+    "identifier-description": {
+      "description": "A description for a specific identifier value.",
+      "examples": [
+        "The version DOI for this version, which has a relation childOf with the concept DOI specified in the doi field in the root of this file.",
+        "The identifier provided by Archival Repository, which points to this version of the software."
+      ],
+      "minLength": 1,
+      "type": "string"
+    },
+    "email": {
+      "description": "An email address.",
+      "pattern": "^[\\S]+@[\\S]+\\.[\\S]{2,}$",
+      "type": "string"
+    },
+    "alias": {
+      "description": "An alias.",
+      "minLength": 1,
+      "type": "string"
+    },
+    "person": {
+      "additionalProperties": false,
+      "description": "A person.",
+      "properties": {
+        "address": {
+          "$ref": "#/definitions/address",
+          "description": "The person's address."
+        },
+        "affiliation": {
+          "description": "The person's affilitation.",
+          "minLength": 1,
+          "type": "string"
+        },
+        "alias": {
+          "$ref": "#/definitions/alias",
+          "description": "The person's alias."
+        },
+        "city": {
+          "$ref": "#/definitions/city",
+          "description": "The person's city."
+        },
+        "country": {
+          "$ref": "#/definitions/country",
+          "description": "The person's country."
+        },
+        "email": {
+          "$ref": "#/definitions/email",
+          "description": "The person's email address."
+        },
+        "family-names": {
+          "description": "The person's family names.",
+          "minLength": 1,
+          "type": "string"
+        },
+        "fax": {
+          "$ref": "#/definitions/fax",
+          "description": "The person's fax number."
+        },
+        "given-names": {
+          "description": "The person's given names.",
+          "minLength": 1,
+          "type": "string"
+        },
+        "name-particle": {
+          "description": "The person's name particle, e.g., a nobiliary particle or a preposition meaning 'of' or 'from' (for example 'von' in 'Alexander von Humboldt').",
+          "examples": [
+            "von"
+          ],
+          "minLength": 1,
+          "type": "string"
+        },
+        "name-suffix": {
+          "description": "The person's name-suffix, e.g. 'Jr.' for Sammy Davis Jr. or 'III' for Frank Edwin Wright III.",
+          "examples": [
+            "Jr.",
+            "III"
+          ],
+          "minLength": 1,
+          "type": "string"
+        },
+        "orcid": {
+          "$ref": "#/definitions/orcid",
+          "description": "The person's ORCID."
+        },
+        "post-code": {
+          "$ref": "#/definitions/post-code",
+          "description": "The person's post-code."
+        },
+        "region": {
+          "$ref": "#/definitions/region",
+          "description": "The person's region."
+        },
+        "tel": {
+          "$ref": "#/definitions/tel",
+          "description": "The person's phone number."
+        },
+        "website": {
+          "$ref": "#/definitions/url",
+          "description": "The person's website."
+        }
+      },
+      "type": "object"
+    },
+    "identifier": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "description": {
+              "$ref": "#/definitions/identifier-description"
+            },
+            "type": {
+              "enum": [
+                "doi"
+              ],
+              "type": "string"
+            },
+            "value": {
+              "$ref": "#/definitions/doi"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "description": {
+              "$ref": "#/definitions/identifier-description"
+            },
+            "type": {
+              "enum": [
+                "url"
+              ],
+              "type": "string"
+            },
+            "value": {
+              "$ref": "#/definitions/url"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "description": {
+              "$ref": "#/definitions/identifier-description"
+            },
+            "type": {
+              "enum": [
+                "swh"
+              ],
+              "type": "string"
+            },
+            "value": {
+              "$ref": "#/definitions/swh-identifier"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "description": {
+              "$ref": "#/definitions/identifier-description"
+            },
+            "type": {
+              "enum": [
+                "other"
+              ],
+              "type": "string"
+            },
+            "value": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        }
+      ],
+      "description": "An identifier for a work."
+    },
+    "orcid": {
+      "description": "Identifier for an author, see https://orcid.org.",
+      "format": "uri",
+      "pattern": "https://orcid\\.org/[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]{1}",
+      "type": "string"
+    },
+    "date": {
+      "$comment": "Note to tool implementers: it is necessary to cast YAML 'date' objects to string objects when validating against this schema.",
+      "examples": [
+        "1900-01-01",
+        "2020-12-31"
+      ],
+      "format": "date",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$",
+      "type": "string"
+    },
+    "tel": {
+      "description": "A phone number.",
+      "minLength": 1,
+      "type": "string"
+    },
+    "doi": {
+      "description": "The DOI of the work (i.e., 10.5281/zenodo.1003150, not the resolver URL http://doi.org/10.5281/zenodo.1003150).",
+      "examples": [
+        "10.5281/zenodo.1003150"
+      ],
+      "pattern": "^10\\.\\d{4,9}(\\.\\d+)?/[A-Za-z0-9:/_;\\-\\.\\(\\)\\[\\]\\\\]+$",
+      "type": "string"
     }
-  }
+  },
+  "required": [
+    "authors",
+    "cff-version"
+  ]
 }
