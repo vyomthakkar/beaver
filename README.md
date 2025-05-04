@@ -9,25 +9,26 @@ A key feature of Beaver is its ability to handle **large and complex JSON schema
 
 ## 📁 Project Structure
 
+```text
 beaver/
-├── .venv/                   # 
-├── pycache/                 # Python bytecode cache (Auto-generated)
-├── testcases/               # Sample files for testing
-│   ├── citations.json       # Example schema for citations
-│   ├── ga.json              # Example schema (generic?)
-│   ├── ga.md                # Example input markdown file
-│   ├── resume.json          # Example schema for resumes
-│   ├── resume.pdf           # Example input PDF file
-│   └── transformers.bib     # Example input BibTeX file
-├── .env                     # Environment variables (API Keys (OPENAI_API_KEY))
-├── .gitignore               # Specifies files/folders for Git to ignore
-├── doc_parse.py             # Module for handling document extraction using LLM
-├── llm.py                   # Module for interacting with the OpenAI API
-├── main.py                  # Main FastAPI application file (Entry Point)
-├── README.md                # This file
-├── requirements.txt         # Project dependencies
-├── schema_chunk.py          # Module for splitting large JSON schemas
-└── testapi.py               # Script to test the API endpoint
+├── .venv/              # Virtual environment directory
+├── __pycache__/        # Python bytecode cache (auto-generated)
+├── testcases/          # Sample files for testing
+│   ├── citations.json
+│   ├── ga.json
+│   ├── ga.md
+│   ├── resume.json
+│   ├── resume.pdf
+│   └── transformers.bib
+├── .env                # Environment variables (OPENAI_API_KEY)
+├── .gitignore          # Files/folders for Git to ignore
+├── doc_parse.py        # Doc-extraction module
+├── llm.py              # OpenAI API client
+├── main.py             # FastAPI entry point
+├── README.md           # This file
+├── requirements.txt    # Dependencies
+├── schema_chunk.py     # Large-schema splitter
+└── testapi.py          # API tester script
 
 
 ## File Descriptions
