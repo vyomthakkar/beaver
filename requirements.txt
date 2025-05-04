@@ -6,4 +6,5 @@ openai
 tiktoken
 fastapi
 uvicorn
+python-multipart
 
