@@ -11,9 +11,13 @@ API_URL = "http://127.0.0.1:8000/format/"
 # or update the paths to point to your actual test files.
 
 # Path to a sample input file (e.g., a dummy text or bib file)
-INPUT_FILE_PATH = "testcases/transformers.bib"
+# INPUT_FILE_PATH = "testcases/transformers.bib"
+# INPUT_FILE_PATH = "testcases/ga.md"
+INPUT_FILE_PATH = "testcases/resume.pdf"
 # Path to a sample schema file (must be a valid JSON)
-SCHEMA_FILE_PATH = "testcases/citations.json"
+# SCHEMA_FILE_PATH = "testcases/citations.json"
+# SCHEMA_FILE_PATH = "testcases/ga.json"
+SCHEMA_FILE_PATH = "testcases/resume.json"
 
 
 
