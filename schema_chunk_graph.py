@@ -289,55 +289,57 @@ def create_schema_chunks(schema, tokenizer_name="cl100k_base", threshold=10000, 
     logging.info(f"Schema chunk generation complete. Produced {len(schema_chunks)} chunks.")
     return schema_chunks
 
-# --- Example Usage ---
 
-# Load your schema
-try:
-    # Assuming your schema is in a file named 'schema.json'
-    with open('testcases/citations.json', 'r') as f:
-    # with open('testcases/ga.json', 'r') as f:
-    # with open('testcases/resume.json', 'r') as f:
-        cff_schema = json.load(f)
-    logging.info("Successfully loaded schema from schema.json")
-except FileNotFoundError:
-    logging.error("schema.json not found. Please provide the correct path.")
-    exit()
-except json.JSONDecodeError as e:
-     logging.error(f"Could not decode JSON from schema file: {e}")
-     exit()
 
-# --- Parameters ---
-TOKENIZER = "cl100k_base"  # For GPT-3.5/4
-# TOKENIZER = "..." # Use appropriate tokenizer if using Gemini or other models
-TOKEN_THRESHOLD = 10000   # Max combined *resolved* token size for properties in a batch
-SORT_PROPS = True         # Sort props alphabetically for consistent batches
+# # --- Example Usage / TESTING ---
 
-# --- Run Chunking ---
-generated_chunks = create_schema_chunks(
-    cff_schema,
-    tokenizer_name=TOKENIZER,
-    threshold=TOKEN_THRESHOLD,
-    sort_props=SORT_PROPS
-)
+# # Load your schema
+# try:
+#     # Assuming your schema is in a file named 'schema.json'
+#     with open('testcases/citations.json', 'r') as f:
+#     # with open('testcases/ga.json', 'r') as f:
+#     # with open('testcases/resume.json', 'r') as f:
+#         cff_schema = json.load(f)
+#     logging.info("Successfully loaded schema from schema.json")
+# except FileNotFoundError:
+#     logging.error("schema.json not found. Please provide the correct path.")
+#     exit()
+# except json.JSONDecodeError as e:
+#      logging.error(f"Could not decode JSON from schema file: {e}")
+#      exit()
 
-# --- Output Results (Optional) ---
-if generated_chunks:
-    print(f"\n--- Generated {len(generated_chunks)} Schema Chunks ---")
-    for i, chunk in enumerate(generated_chunks):
-        chunk_props = list(chunk.get('properties', {}).keys())
-        num_defs = len(chunk.get('definitions', {}))
-        # Optional: Estimate token count of the final generated chunk itself
-        try:
-             chunk_tokenizer = tiktoken.get_encoding(TOKENIZER)
-             chunk_token_count = get_token_count(chunk, chunk_tokenizer)
-             print(f"Chunk {i+1} (Properties: {chunk_props}) "
-                   f"({num_defs} definitions) "
-                   f"(Est. Chunk Tokens: {chunk_token_count})")
-        except Exception as e:
-             print(f"Chunk {i+1} (Properties: {chunk_props}) ({num_defs} definitions) - Error estimating chunk tokens: {e}")
+# # --- Parameters ---
+# TOKENIZER = "cl100k_base"  # For GPT-3.5/4
+# # TOKENIZER = "..." # Use appropriate tokenizer if using Gemini or other models
+# TOKEN_THRESHOLD = 10000   # Max combined *resolved* token size for properties in a batch
+# SORT_PROPS = True         # Sort props alphabetically for consistent batches
 
-        # Optional: Save each chunk to a file
-        with open(f'schema_chunk_{i+1}.json', 'w') as f:
-            json.dump(chunk, f, indent=2)
-else:
-    print("No schema chunks were generated.")
+# # --- Run Chunking ---
+# generated_chunks = create_schema_chunks(
+#     cff_schema,
+#     tokenizer_name=TOKENIZER,
+#     threshold=TOKEN_THRESHOLD,
+#     sort_props=SORT_PROPS
+# )
+
+# # --- Output Results (Optional) ---
+# if generated_chunks:
+#     print(f"\n--- Generated {len(generated_chunks)} Schema Chunks ---")
+#     for i, chunk in enumerate(generated_chunks):
+#         chunk_props = list(chunk.get('properties', {}).keys())
+#         num_defs = len(chunk.get('definitions', {}))
+#         # Optional: Estimate token count of the final generated chunk itself
+#         try:
+#              chunk_tokenizer = tiktoken.get_encoding(TOKENIZER)
+#              chunk_token_count = get_token_count(chunk, chunk_tokenizer)
+#              print(f"Chunk {i+1} (Properties: {chunk_props}) "
+#                    f"({num_defs} definitions) "
+#                    f"(Est. Chunk Tokens: {chunk_token_count})")
+#         except Exception as e:
+#              print(f"Chunk {i+1} (Properties: {chunk_props}) ({num_defs} definitions) - Error estimating chunk tokens: {e}")
+
+#         # Optional: Save each chunk to a file
+#         with open(f'schema_chunk_{i+1}.json', 'w') as f:
+#             json.dump(chunk, f, indent=2)
+# else:
+#     print("No schema chunks were generated.")

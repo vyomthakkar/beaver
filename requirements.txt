@@ -7,3 +7,9 @@ python-dotenv
 openai
 tiktoken
 mimetypes
+fastapi
+uvicorn
+json
+tempfile
+shutil
+os
