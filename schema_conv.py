@@ -8,7 +8,7 @@ from google.genai import types
 import os
 import time
 import concurrent.futures
-from llm import gpt_file, gpt
+from llm import gpt_file
 
 
 load_dotenv()
