@@ -42,14 +42,16 @@ def format(input_file, schema):
     # return
     
     for chunk in generated_chunks:
-        print("-"*100)
-        print("schema chunk: ", chunk['properties'].keys())
-        print("-"*100)
+        # print("-"*100)
+        # print("schema chunk: ", chunk['properties'].keys())
+        # print("-"*100)
         chunked_output.append(extract_document(input_file, chunk))
-        break
         
-    print(chunked_output)
-    print(len(chunked_output))
+    # print(chunked_output)
+    # print(len(chunked_output))
+    
+    return chunked_output
+        
 
 
 # extract_document('testcases/transformers.bib', convert_schema_to_json('schema_chunk_5.json'))

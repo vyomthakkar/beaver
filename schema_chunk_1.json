@@ -78,38 +78,18 @@
     }
   },
   "definitions": {
-    "region": {
-      "description": "A region.",
-      "minLength": 1,
-      "type": "string"
-    },
-    "swh-identifier": {
-      "$comment": "Software Heritage identifiers are documented here: https://docs.softwareheritage.org/devel/swh-model/persistent-identifiers.html.",
-      "description": "The Software Heritage identifier (without further qualifiers such as origin, visit, anchor, path).",
+    "date": {
+      "$comment": "Note to tool implementers: it is necessary to cast YAML 'date' objects to string objects when validating against this schema.",
       "examples": [
-        "swh:1:cnt:94a9ed024d3859793618152ea559a168bbcbb5e2",
-        "swh:1:dir:d198bc9d7a6bcf6db04f476d29314f157507d505",
-        "swh:1:rev:309cf2674ee7a0749978cf8265ab91a60aea0f7d",
-        "swh:1:rel:22ece559cc7cc2364edc5e5593d63ae8bd229f9f",
-        "swh:1:snp:c7c108084bc0bf3d81436bf980b46e98bd338453"
+        "1900-01-01",
+        "2020-12-31"
       ],
-      "pattern": "^swh:1:(snp|rel|rev|dir|cnt):[0-9a-fA-F]{40}$",
+      "format": "date",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$",
       "type": "string"
     },
-    "post-code": {
-      "anyOf": [
-        {
-          "minLength": 1,
-          "type": "string"
-        },
-        {
-          "type": "number"
-        }
-      ],
-      "description": "A post code."
-    },
-    "city": {
-      "description": "A city",
+    "alias": {
+      "description": "An alias.",
       "minLength": 1,
       "type": "string"
     },
@@ -118,92 +98,96 @@
       "minLength": 1,
       "type": "string"
     },
-    "url": {
-      "format": "uri",
-      "pattern": "^(https|http|ftp|sftp)://.+",
+    "doi": {
+      "description": "The DOI of the work (i.e., 10.5281/zenodo.1003150, not the resolver URL http://doi.org/10.5281/zenodo.1003150).",
+      "examples": [
+        "10.5281/zenodo.1003150"
+      ],
+      "pattern": "^10\\.\\d{4,9}(\\.\\d+)?/[A-Za-z0-9:/_;\\-\\.\\(\\)\\[\\]\\\\]+$",
       "type": "string"
     },
-    "entity": {
+    "person": {
       "additionalProperties": false,
-      "description": "An entity, i.e., an institution, team, research group, company, conference, etc., as opposed to a single natural person.",
+      "description": "A person.",
       "properties": {
         "address": {
           "$ref": "#/definitions/address",
-          "description": "The entity's address."
+          "description": "The person's address."
         },
-        "alias": {
-          "$ref": "#/definitions/alias",
-          "description": "The entity's alias."
-        },
-        "city": {
-          "$ref": "#/definitions/city",
-          "description": "The entity's city."
-        },
-        "country": {
-          "$ref": "#/definitions/country",
-          "description": "The entity's country."
-        },
-        "date-end": {
-          "$ref": "#/definitions/date",
-          "description": "The entity's ending date, e.g., when the entity is a conference."
-        },
-        "date-start": {
-          "$ref": "#/definitions/date",
-          "description": "The entity's starting date, e.g., when the entity is a conference."
-        },
-        "email": {
-          "$ref": "#/definitions/email",
-          "description": "The entity's email address."
-        },
-        "fax": {
-          "$ref": "#/definitions/fax",
-          "description": "The entity's fax number."
-        },
-        "location": {
-          "description": "The entity's location, e.g., when the entity is a conference.",
+        "affiliation": {
+          "description": "The person's affilitation.",
           "minLength": 1,
           "type": "string"
         },
-        "name": {
-          "description": "The entity's name.",
+        "alias": {
+          "$ref": "#/definitions/alias",
+          "description": "The person's alias."
+        },
+        "city": {
+          "$ref": "#/definitions/city",
+          "description": "The person's city."
+        },
+        "country": {
+          "$ref": "#/definitions/country",
+          "description": "The person's country."
+        },
+        "email": {
+          "$ref": "#/definitions/email",
+          "description": "The person's email address."
+        },
+        "family-names": {
+          "description": "The person's family names.",
+          "minLength": 1,
+          "type": "string"
+        },
+        "fax": {
+          "$ref": "#/definitions/fax",
+          "description": "The person's fax number."
+        },
+        "given-names": {
+          "description": "The person's given names.",
+          "minLength": 1,
+          "type": "string"
+        },
+        "name-particle": {
+          "description": "The person's name particle, e.g., a nobiliary particle or a preposition meaning 'of' or 'from' (for example 'von' in 'Alexander von Humboldt').",
+          "examples": [
+            "von"
+          ],
+          "minLength": 1,
+          "type": "string"
+        },
+        "name-suffix": {
+          "description": "The person's name-suffix, e.g. 'Jr.' for Sammy Davis Jr. or 'III' for Frank Edwin Wright III.",
+          "examples": [
+            "Jr.",
+            "III"
+          ],
           "minLength": 1,
           "type": "string"
         },
         "orcid": {
           "$ref": "#/definitions/orcid",
-          "description": "The entity's orcid."
+          "description": "The person's ORCID."
         },
         "post-code": {
           "$ref": "#/definitions/post-code",
-          "description": "The entity's post code."
+          "description": "The person's post-code."
         },
         "region": {
           "$ref": "#/definitions/region",
-          "description": "The entity's region."
+          "description": "The person's region."
         },
         "tel": {
           "$ref": "#/definitions/tel",
-          "description": "The entity's telephone number."
+          "description": "The person's phone number."
         },
         "website": {
           "$ref": "#/definitions/url",
-          "description": "The entity's website."
+          "description": "The person's website."
         }
       },
-      "required": [
-        "name"
-      ],
       "type": "object"
-    },
-    "commit": {
-      "description": "The (e.g., Git) commit hash or (e.g., Subversion) revision number of the work.",
-      "minLength": 1,
-      "type": "string"
-    },
-    "fax": {
-      "description": "A fax number.",
-      "minLength": 1,
-      "type": "string"
     },
     "country": {
       "$comment": "ISO 3166-1 alpha-2 codes can be found at https://en.wikipedia.org/wiki/ISO_3166-1",
@@ -470,97 +454,87 @@
       "minLength": 1,
       "type": "string"
     },
-    "email": {
-      "description": "An email address.",
-      "pattern": "^[\\S]+@[\\S]+\\.[\\S]{2,}$",
+    "orcid": {
+      "description": "Identifier for an author, see https://orcid.org.",
+      "format": "uri",
+      "pattern": "https://orcid\\.org/[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]{1}",
       "type": "string"
     },
-    "alias": {
-      "description": "An alias.",
+    "fax": {
+      "description": "A fax number.",
       "minLength": 1,
       "type": "string"
     },
-    "person": {
+    "entity": {
       "additionalProperties": false,
-      "description": "A person.",
+      "description": "An entity, i.e., an institution, team, research group, company, conference, etc., as opposed to a single natural person.",
       "properties": {
         "address": {
           "$ref": "#/definitions/address",
-          "description": "The person's address."
-        },
-        "affiliation": {
-          "description": "The person's affilitation.",
-          "minLength": 1,
-          "type": "string"
+          "description": "The entity's address."
         },
         "alias": {
           "$ref": "#/definitions/alias",
-          "description": "The person's alias."
+          "description": "The entity's alias."
         },
         "city": {
           "$ref": "#/definitions/city",
-          "description": "The person's city."
+          "description": "The entity's city."
         },
         "country": {
           "$ref": "#/definitions/country",
-          "description": "The person's country."
+          "description": "The entity's country."
+        },
+        "date-end": {
+          "$ref": "#/definitions/date",
+          "description": "The entity's ending date, e.g., when the entity is a conference."
+        },
+        "date-start": {
+          "$ref": "#/definitions/date",
+          "description": "The entity's starting date, e.g., when the entity is a conference."
         },
         "email": {
           "$ref": "#/definitions/email",
-          "description": "The person's email address."
-        },
-        "family-names": {
-          "description": "The person's family names.",
-          "minLength": 1,
-          "type": "string"
+          "description": "The entity's email address."
         },
         "fax": {
           "$ref": "#/definitions/fax",
-          "description": "The person's fax number."
+          "description": "The entity's fax number."
         },
-        "given-names": {
-          "description": "The person's given names.",
+        "location": {
+          "description": "The entity's location, e.g., when the entity is a conference.",
           "minLength": 1,
           "type": "string"
         },
-        "name-particle": {
-          "description": "The person's name particle, e.g., a nobiliary particle or a preposition meaning 'of' or 'from' (for example 'von' in 'Alexander von Humboldt').",
-          "examples": [
-            "von"
-          ],
-          "minLength": 1,
-          "type": "string"
-        },
-        "name-suffix": {
-          "description": "The person's name-suffix, e.g. 'Jr.' for Sammy Davis Jr. or 'III' for Frank Edwin Wright III.",
-          "examples": [
-            "Jr.",
-            "III"
-          ],
+        "name": {
+          "description": "The entity's name.",
           "minLength": 1,
           "type": "string"
         },
         "orcid": {
           "$ref": "#/definitions/orcid",
-          "description": "The person's ORCID."
+          "description": "The entity's orcid."
         },
         "post-code": {
           "$ref": "#/definitions/post-code",
-          "description": "The person's post-code."
+          "description": "The entity's post code."
         },
         "region": {
           "$ref": "#/definitions/region",
-          "description": "The person's region."
+          "description": "The entity's region."
         },
         "tel": {
           "$ref": "#/definitions/tel",
-          "description": "The person's phone number."
+          "description": "The entity's telephone number."
         },
         "website": {
           "$ref": "#/definitions/url",
-          "description": "The person's website."
+          "description": "The entity's website."
         }
       },
+      "required": [
+        "name"
+      ],
       "type": "object"
     },
     "identifier": {
@@ -657,20 +631,49 @@
       ],
       "description": "An identifier for a work."
     },
-    "orcid": {
-      "description": "Identifier for an author, see https://orcid.org.",
-      "format": "uri",
-      "pattern": "https://orcid\\.org/[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]{1}",
+    "post-code": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "description": "A post code."
+    },
+    "region": {
+      "description": "A region.",
+      "minLength": 1,
       "type": "string"
     },
-    "date": {
-      "$comment": "Note to tool implementers: it is necessary to cast YAML 'date' objects to string objects when validating against this schema.",
+    "swh-identifier": {
+      "$comment": "Software Heritage identifiers are documented here: https://docs.softwareheritage.org/devel/swh-model/persistent-identifiers.html.",
+      "description": "The Software Heritage identifier (without further qualifiers such as origin, visit, anchor, path).",
       "examples": [
-        "1900-01-01",
-        "2020-12-31"
+        "swh:1:cnt:94a9ed024d3859793618152ea559a168bbcbb5e2",
+        "swh:1:dir:d198bc9d7a6bcf6db04f476d29314f157507d505",
+        "swh:1:rev:309cf2674ee7a0749978cf8265ab91a60aea0f7d",
+        "swh:1:rel:22ece559cc7cc2364edc5e5593d63ae8bd229f9f",
+        "swh:1:snp:c7c108084bc0bf3d81436bf980b46e98bd338453"
       ],
-      "format": "date",
-      "pattern": "^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$",
+      "pattern": "^swh:1:(snp|rel|rev|dir|cnt):[0-9a-fA-F]{40}$",
+      "type": "string"
+    },
+    "city": {
+      "description": "A city",
+      "minLength": 1,
+      "type": "string"
+    },
+    "commit": {
+      "description": "The (e.g., Git) commit hash or (e.g., Subversion) revision number of the work.",
+      "minLength": 1,
+      "type": "string"
+    },
+    "url": {
+      "format": "uri",
+      "pattern": "^(https|http|ftp|sftp)://.+",
       "type": "string"
     },
     "tel": {
@@ -678,12 +681,9 @@
       "minLength": 1,
       "type": "string"
     },
-    "doi": {
-      "description": "The DOI of the work (i.e., 10.5281/zenodo.1003150, not the resolver URL http://doi.org/10.5281/zenodo.1003150).",
-      "examples": [
-        "10.5281/zenodo.1003150"
-      ],
-      "pattern": "^10\\.\\d{4,9}(\\.\\d+)?/[A-Za-z0-9:/_;\\-\\.\\(\\)\\[\\]\\\\]+$",
+    "email": {
+      "description": "An email address.",
+      "pattern": "^[\\S]+@[\\S]+\\.[\\S]{2,}$",
       "type": "string"
     }
   },
