@@ -1,4 +1,4 @@
-# beaver
+# 🦫 beaver
 
 Schema-Driven Structured Data Extraction
 
