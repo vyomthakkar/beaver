@@ -11,8 +11,8 @@ import tiktoken
 
 
 
-from schema_conv import extract_document, convert_schema_to_json
-from schema_chunk_graph import create_schema_chunks, get_token_count
+from doc_parse import extract_document, convert_schema_to_json
+from schema_chunk import create_schema_chunks, get_token_count
 
 
 
@@ -51,17 +51,10 @@ def format(input_file, schema_json):
     
     chunked_output = []
     
-    # print(generated_chunks[0])
-    # return
     
     for chunk in generated_chunks:
-        # print("-"*100)
-        # print("schema chunk: ", chunk['properties'].keys())
-        # print("-"*100)
         chunked_output.append(extract_document(input_file, chunk))
         
-    print(chunked_output)
-    print(len(chunked_output))
     
     return chunked_output
 
@@ -145,14 +138,5 @@ async def root():
 
 # --- Main execution block ---
 if __name__ == "__main__":
-    # Run the FastAPI app using uvicorn
-    # Host '0.0.0.0' makes it accessible on your network
-    # Reload=True is useful for development, automatically restarts on code changes
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
-    # For production, consider using a more robust server setup (e.g., gunicorn with uvicorn workers)
-    # uvicorn.run(app, host="127.0.0.1", port=8000) # Simpler run without reload
 
-
-
-# extract_document('testcases/transformers.bib', convert_schema_to_json('schema_chunk_5.json'))
-# format('testcases/transformers.bib', 'testcases/citations.json')

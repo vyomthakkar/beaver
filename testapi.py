@@ -3,21 +3,18 @@ import os
 import json
 
 # --- Configuration ---
-# URL of your running FastAPI application's endpoint
-# API_URL = "http://127.0.0.1:8000/format/"
-API_URL = "https://api.usequanta.ai/format/"
-# --- !!! IMPORTANT !!! ---
-# Create these files in the same directory as this script,
-# or update the paths to point to your actual test files.
+API_URL = "http://127.0.0.1:8000/format/"
+# API_URL = "https://api.usequanta.ai/format/"
+
 
 # Path to a sample input file (e.g., a dummy text or bib file)
-# INPUT_FILE_PATH = "testcases/transformers.bib"
+INPUT_FILE_PATH = "testcases/transformers.bib"
 # INPUT_FILE_PATH = "testcases/ga.md"
-INPUT_FILE_PATH = "testcases/resume.pdf"
+# INPUT_FILE_PATH = "testcases/resume.pdf"
 # Path to a sample schema file (must be a valid JSON)
-# SCHEMA_FILE_PATH = "testcases/citations.json"
+SCHEMA_FILE_PATH = "testcases/citations.json"
 # SCHEMA_FILE_PATH = "testcases/ga.json"
-SCHEMA_FILE_PATH = "testcases/resume.json"
+# SCHEMA_FILE_PATH = "testcases/resume.json"
 
 
 

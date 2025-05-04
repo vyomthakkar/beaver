@@ -203,39 +203,39 @@ def create_schema_chunks(schema, tokenizer_name="cl100k_base", threshold=10000, 
     logging.info("Step 3: Generating minimal schema chunks for each batch...")
     
     # --- Step 2.5: Validation - Check Required Field Coverage ---
-    logging.info("Step 2.5: Validating coverage of required fields...")
-    validation_passed = True # Assume pass initially
-    # original_required = schema.get('required', [])
-    original_required = schema['properties'].keys()
-    print(f"{original_required=}")
-    # if not isinstance(original_required, list):
-    #     logging.warning("Original schema 'required' field is not a list. Skipping validation.")
-    #     original_required = []
+    # logging.info("Step 2.5: Validating coverage of required fields...")
+    # validation_passed = True # Assume pass initially
+    # # original_required = schema.get('required', [])
+    # original_required = schema['properties'].keys()
+    # print(f"{original_required=}")
+    # # if not isinstance(original_required, list):
+    # #     logging.warning("Original schema 'required' field is not a list. Skipping validation.")
+    # #     original_required = []
 
-    # if original_required: #CHANGED THIS, TODO: FIX LOGIC, REMOVE CONDITIONAL
-    all_chunked_properties = set()
-    for batch in property_batches:
-        all_chunked_properties.update(batch)
+    # # if original_required: #CHANGED THIS, TODO: FIX LOGIC, REMOVE CONDITIONAL
+    # all_chunked_properties = set()
+    # for batch in property_batches:
+    #     all_chunked_properties.update(batch)
 
-    missing_required = set(original_required) - all_chunked_properties
+    # missing_required = set(original_required) - all_chunked_properties
     
-    print(f"{missing_required=}")
-    print(f"{all_chunked_properties=}")
-    print(f"{original_required=}")
-    print(f"{len(original_required)=}")
-    print(f"{len(all_chunked_properties)=}")
-    print(f"{schema['properties'].keys()=}")
+    # print(f"{missing_required=}")
+    # print(f"{all_chunked_properties=}")
+    # print(f"{original_required=}")
+    # print(f"{len(original_required)=}")
+    # print(f"{len(all_chunked_properties)=}")
+    # print(f"{schema['properties'].keys()=}")
     
-    if not missing_required:
-        logging.info("Validation successful: All original required fields are covered by the generated batches.")
-    else:
-        logging.error(f"Validation FAILED: The following required fields from the original schema "
-                        f"are NOT covered by any generated batch: {missing_required}")
-        validation_passed = False
-        # Decide if you want to stop processing here or just log
-        # For now, we log the error and continue, but you might want to return None or raise an Exception
-        # return None # Example of stopping execution
-    # ---------------------------------------------------------
+    # if not missing_required:
+    #     logging.info("Validation successful: All original required fields are covered by the generated batches.")
+    # else:
+    #     logging.error(f"Validation FAILED: The following required fields from the original schema "
+    #                     f"are NOT covered by any generated batch: {missing_required}")
+    #     validation_passed = False
+    #     # Decide if you want to stop processing here or just log
+    #     # For now, we log the error and continue, but you might want to return None or raise an Exception
+    #     # return None # Example of stopping execution
+    # # ---------------------------------------------------------
     
     # 3. Generate minimal schema for each batch
     schema_chunks = []
