@@ -29,6 +29,7 @@ beaver/
 ├── requirements.txt    # Dependencies
 ├── schema_chunk.py     # Large-schema splitter
 └── testapi.py          # API tester script
+```
 
 
 ## File Descriptions
