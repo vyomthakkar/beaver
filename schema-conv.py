@@ -14,8 +14,8 @@ from llm import gpt
 load_dotenv()
 
 
-# input_schema_path = 'testcases/citations.json'
-input_schema_path = 'schema_chunk_5.json'
+input_schema_path = 'testcases/citations.json'
+# input_schema_path = 'schema_chunk_5.json'
 input_text_path = 'testcases/transformers.bib'
 
 

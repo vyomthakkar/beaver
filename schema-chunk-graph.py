@@ -210,7 +210,8 @@ def create_schema_chunks(schema, tokenizer_name="cl100k_base", threshold=10000, 
         logging.warning("Original schema 'required' field is not a list. Skipping validation.")
         original_required = []
 
-    if original_required:
+    # if original_required: #CHANGED THIS, TODO: FIX LOGIC, REMOVE CONDITIONAL
+    if True:
         all_chunked_properties = set()
         for batch in property_batches:
             all_chunked_properties.update(batch)
