@@ -4,8 +4,8 @@ import json
 
 # --- Configuration ---
 # URL of your running FastAPI application's endpoint
-API_URL = "http://127.0.0.1:8000/format/"
-
+# API_URL = "http://127.0.0.1:8000/format/"
+API_URL = "https://api.usequanta.ai/format/"
 # --- !!! IMPORTANT !!! ---
 # Create these files in the same directory as this script,
 # or update the paths to point to your actual test files.

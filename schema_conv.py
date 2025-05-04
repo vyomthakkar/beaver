@@ -22,8 +22,8 @@ input_text_path = 'testcases/transformers.bib'
     
 def extract_document(file_path, schema):
     print(f"Extracting document from {file_path}")
-    client = genai.Client()
-    model = "gemini-2.0-flash"
+    # client = genai.Client()
+    # model = "gemini-2.0-flash"
     # model="gemini-2.5-flash-preview-04-17"
 
     # file_ref = client.files.upload(file=file_path, config=types.UploadFileConfig(mime_type="text/plain"))
