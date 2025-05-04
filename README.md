@@ -10,8 +10,8 @@ A key feature of Beaver is its ability to handle **large and complex JSON schema
 ## 📁 Project Structure
 
 beaver/
-├── .venv/                   # Virtual environment directory (Recommended)
-├── __pycache__/             # Python bytecode cache (Auto-generated)
+├── .venv/                   # 
+├── pycache/                 # Python bytecode cache (Auto-generated)
 ├── testcases/               # Sample files for testing
 │   ├── citations.json       # Example schema for citations
 │   ├── ga.json              # Example schema (generic?)
@@ -19,7 +19,7 @@ beaver/
 │   ├── resume.json          # Example schema for resumes
 │   ├── resume.pdf           # Example input PDF file
 │   └── transformers.bib     # Example input BibTeX file
-├── .env                     # Environment variables (API Keys, etc. - DO NOT COMMIT)
+├── .env                     # Environment variables (API Keys (OPENAI_API_KEY))
 ├── .gitignore               # Specifies files/folders for Git to ignore
 ├── doc_parse.py             # Module for handling document extraction using LLM
 ├── llm.py                   # Module for interacting with the OpenAI API
@@ -28,6 +28,7 @@ beaver/
 ├── requirements.txt         # Project dependencies
 ├── schema_chunk.py          # Module for splitting large JSON schemas
 └── testapi.py               # Script to test the API endpoint
+
 
 ## File Descriptions
 
